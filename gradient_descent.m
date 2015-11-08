@@ -8,14 +8,15 @@
 %           1 if weight vectors are adjusted
 
 
-function s = gradient_descent(y,a, eta)
-s = 0;
+function a = gradient_descent(y,b, eta)
+a = b;
+k = 1;
 n= size(y,1);
-for i=1:n
-    if a'*y(i,:) > 0
+for i=k:n
+    if a*y(i,:)' > 0
         continue;
     else
        a = a + eta*y(i, :); 
-       s = 1;
+       k = 1;
     end
 end    

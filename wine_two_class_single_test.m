@@ -7,6 +7,8 @@
 %modify next two lines based on data sets
 % number of class
 c = 3;
+% learning rate
+eta = 0.6;
 
 % read data, 1st column is the class
 ux = dlmread('wine_uci_train.txt');
@@ -26,7 +28,7 @@ d = size(x,2) - 1;
 a = zeros(c,d+1);
 
 for i=1:c
-    a(i,:) = single_sample_perceptron(x, i);
+    a(i,:) = single_sample_perceptron(x, i, eta);
 end    
 
 %test data
@@ -43,7 +45,7 @@ fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 for i=1:k
     % loop through weaight vectors for each class 
     for j=1:c
-        if a(j,:)'*y(i,2:end) > 0
+        if a(j,:)*y(i,2:end)' > 0
             if (y(i) == j) % if they are correct
                  h = h+1;
                  fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t yes\n', i, y(i), j);

@@ -7,10 +7,8 @@
 % output:
 %        a: weight vector trained by the Perceptron criterion
 
-function a = single_sample_perceptron(x, c)
+function a = single_sample_perceptron(x, c, eta)
 
-%learning rate
-eta = 1;
 
 % number of samples
 n = size(x,1);
@@ -33,17 +31,9 @@ end
 
 % initialize a vector with all ones
 a = ones(1, d+1);
-flag = 0;
+
 % convergence
-for i=1:n
-    if a'*y(i,:) > 0
-        
-        continue;
-    else
-       a = a + eta*y(i, :); 
-       flag = 1;
-    end
-end    
+a = gradient_descent(y, a, eta);
 
 
 
