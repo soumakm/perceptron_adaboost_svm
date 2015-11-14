@@ -4,17 +4,15 @@
 %           samples, d represents dimension of feature vector.
 %           First column of x is class number
 %        c: class number for which it will generate weight vector
+%        a: initial weight vector for training
+%      eta: learning rate
 % output:
 %        a: weight vector trained by the Perceptron criterion
 
-function a = single_sample_perceptron(x, c, eta)
-
+function a = single_sample_perceptron(x, c, a, eta)
 
 % number of samples
 n = size(x,1);
-
-% number of dimentions in feature vector
-d = size(x, 2) - 1;
 
 % first add 1 to feature to make augmented vector
 I  = ones(n, 1);
@@ -29,10 +27,7 @@ for i = 1:n
    end    
 end   
 
-% initialize a vector with all ones
-a = ones(1, d+1);
-
-% convergence
+% call gradient descent
 a = gradient_descent(y, a, eta);
 
 
