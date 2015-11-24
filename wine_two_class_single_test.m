@@ -33,7 +33,7 @@ a0 = ones(1, d+1);
 a = zeros(c,d+1);
 
 for i=1:c
-    a(i,:) = single_sample_perceptron(x, i, a0, eta);
+    a(i,:) = ss_perceptron_one_against_rest(x, i, a0, eta);
 end    
 
 %test data
