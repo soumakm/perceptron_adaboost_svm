@@ -13,7 +13,7 @@ n= size(y,1);
 col = size(y,2);
 miss = 1;
 l = 1;
-while miss == 1 && l < 2000
+while miss == 1 && l < 5000
     x = zeros(1,col);
     
     miss =0;

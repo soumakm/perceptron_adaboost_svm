@@ -12,11 +12,11 @@ clear all;
 clc;
 
 %margin
-b = 5;
+b = -0.1;
 %number of classes
 c = 3;
 % learning rate
-eta = 0.6;
+eta = 0.01;
 
 % read data, 1st column is the class
 x = dlmread('handwritten_0_2_train.txt');
