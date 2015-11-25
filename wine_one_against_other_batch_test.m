@@ -12,11 +12,11 @@ clear all;
 clc;
 
 %margin
-b = 0;
+b = 5;
 %number of classes
 c = 3;
 % learning rate
-eta = 0.6;
+eta = 1;
 
 % read data, 1st column is the class
 ux = dlmread('wine_uci_train.txt');

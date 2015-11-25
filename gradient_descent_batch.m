@@ -12,18 +12,17 @@ a = b;
 n= size(y,1);
 col = size(y,2);
 miss = 1;
-l = 0;
-while miss == 1 && l < 1000
+l = 1;
+while miss == 1 && l < 5000
     x = zeros(1,col);
     
     miss =0;
     for i=1:n
         if a*y(i,:)' <= m
-            
            x = x + (m - a*y(i,:)')*y(i,:)/(norm(y(i,:))^2);
            miss =1;
         end
     end 
-    l = l +1;
+    l = l + 1;
     a = a + eta*x; 
 end    
