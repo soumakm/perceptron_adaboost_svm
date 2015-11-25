@@ -100,14 +100,14 @@ for i=1:k
         end 
         
        [M, F] = mode(class); 
-    if(F == 1)   
-        fprintf('%d\t\t\t\t %d\t\t\t\t ambiguous\t\t no\n', i, y(i));
-    elseif (y(i) == M) % if they are correct
-        h = h+1;
-        fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t yes\n', i, y(i), M);
-    elseif (y(i) ~= M)
-        fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t no\n', i, y(i), M);
-    end   
+        if(F == 1)   
+            fprintf('%d\t\t\t\t %d\t\t\t\t ambiguous\t\t no\n', i, y(i));
+        elseif (y(i) == M) % if they are correct
+            h = h+1;
+            fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t yes\n', i, y(i), M);
+        elseif (y(i) ~= M)
+            fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t no\n', i, y(i), M);
+        end   
     
 end
 p = h/k*100;
