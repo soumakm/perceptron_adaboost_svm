@@ -65,5 +65,6 @@ for i=1:k
     
 end
 p = h/k*100;
+h
 fprintf('The performance of two class  classifier on wine data set is %.2f\n',p);
    

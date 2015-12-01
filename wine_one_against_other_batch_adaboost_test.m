@@ -18,6 +18,8 @@ b = 5;
 c = 3;
 % learning rate
 eta = 1;
+%number of adaboost iterations
+kmax = 10;
 
 % read data, 1st column is the class
 ux = dlmread('wine_uci_train.txt');
@@ -35,9 +37,6 @@ d = size(x,2) - 1;
 
 % initialize weight vector with all ones
 a0 = ones(1, d+1);
-
-%trained weight vector 
-a = zeros(c,d+1);
 
 %separate matrix for each class
 b1=1;
@@ -67,8 +66,6 @@ end
 
 %test data
 k = size(y,1);
-
-h = 0;
 
 % first add 1 to feature to make augmented vector
 I  = ones(k, 1);
@@ -147,7 +144,6 @@ for i=1:k
         else
              class = 3;
         end 
-   
         if(y(i) == class)   %correct
             h = h+1;
          %   fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t yes\n', i, y(i), class);
@@ -158,4 +154,61 @@ for i=1:k
 end
 p = h/j*100;
 fprintf('The performance of class 2-3  classifier on wine data set is %.2f\n',p);
-  
+
+%adaboost for class 1-2 classifier
+
+% initialize weight vector with 1/n
+a0 = ones(1, d+1)/n;
+
+% first add 1 to feature to make augmented vector
+Ix  = ones(n, 1);
+
+%class predicted by classifier
+class = 0;
+
+% augmented matrix add 1, 
+z = [x(:, 1) Ix x(:,2:end)];
+
+alpha = 0;
+%loop for AdaBoost
+for q=1:kmax
+    a12 = batch_perceptron_one_against_other(x1, x2, a0, eta, b);
+
+    j = 0;
+    e = 0;
+    %loop through each test sample
+    for i=1:n
+        %test only class 1 and class 2 samples
+        if(z(i) == 1 || z(i) == 2)
+            j = j + 1;
+            if a12*y(i,2:end)' > b
+                 class = 1;
+            else
+                 class = 2;
+            end 
+            if(z(i) ~= class)   %incorrect
+                e = e+1;
+            end   
+        end
+    end
+    fprintf('The error rate of class 1-2  classifier number %d on wine data set is %.2f\n',q,e/j);
+    alpha = 0.5*ln((1-e)/e);
+    
+    %The for loop is just for weight update
+    for i=1:n
+        %test only class 1 and class 2 samples
+        if(z(i) == 1 || z(i) == 2)
+            if a12*y(i,2:end)' > b
+                 class = 1;
+            else
+                 class = 2;
+            end 
+            if(z(i) ~= class)   %incorrect
+               a0 = a0*exp(alpha);
+            else %correct
+               a0 = a0*exp(alpha); 
+            end   
+        end
+    end
+    
+end
