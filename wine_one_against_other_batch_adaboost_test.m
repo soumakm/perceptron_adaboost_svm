@@ -32,6 +32,9 @@ y = [uy(1:end,1),normalize(uy(:,2:end))];
 % number of training samples
 n = size(x,1);
 
+%adaboost sample size
+s = n/2;
+
 %dimesion of feature vector
 d = size(x,2) - 1;
 
@@ -136,7 +139,7 @@ j = 0;
 h = 0;
 %loop through each test sample
 for i=1:k
-    %test only class 1 and class 3 samples
+    %test only class 2 and class 3 samples
     if(y(i) == 2 || y(i) == 3)
         j = j + 1;
         if a23*y(i,2:end)' > b
@@ -156,18 +159,20 @@ p = h/j*100;
 fprintf('The performance of class 2-3  classifier on wine data set is %.2f\n',p);
 
 %adaboost for class 1-2 classifier
+%weight for each training samples in the begining 
+w = 1/n;
 
-% initialize weight vector with 1/n
-a0 = ones(1, d+1)/n;
+% initialize weight vector with one, this is for perceptron
+a0 = ones(1, d+1);
 
 % first add 1 to feature to make augmented vector
 Ix  = ones(n, 1);
 
-%class predicted by classifier
-class = 0;
-
 % augmented matrix add 1, 
 z = [x(:, 1) Ix x(:,2:end)];
+
+%class predicted by classifier
+class = 0;
 
 alpha = 0;
 %loop for AdaBoost
@@ -204,9 +209,9 @@ for q=1:kmax
                  class = 2;
             end 
             if(z(i) ~= class)   %incorrect
-               a0 = a0*exp(alpha);
+               w = w*exp(alpha);
             else %correct
-               a0 = a0*exp(alpha); 
+               w = w*exp(-alpha); 
             end   
         end
     end
