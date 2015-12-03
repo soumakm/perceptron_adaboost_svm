@@ -19,10 +19,10 @@ c = 3;
 % learning rate
 eta = 1;
 %number of adaboost iterations
-kmax = 5;
+kmax = 20;
 
 %number of samples
-s=89;
+s=50;
 
 % read data, 1st column is the class
 ux = dlmread('wine_uci_train.txt');
@@ -170,6 +170,7 @@ fprintf('Computing perfromance for Class 1-2 classifier using AdaBoost\n');
 %fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0;
 h = 0;
+h1 = 0;
 %loop through each test sample
 for i=1:k
     g_ada = 0;
@@ -193,10 +194,20 @@ for i=1:k
       %      fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t yes\n', i, y(i), class);
       %  else
       %      fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t no\n', i, y(i), class);
-        end   
+        end  
+        if hk(1,:)*y(i,2:end)' > b
+             class = 1;
+        else
+             class = 2;
+        end 
+        if(y(i) == class)   %correct
+            h1 = h1+1;
+        end    
     end
 end
 p = h/j*100;
+p1 = h1/j*100;
+fprintf('The performance of class 1-2  classifier without AdaBoost on wine data set is %.2f\n',p1);
 fprintf('The performance of class 1-2  classifier using AdaBoost on wine data set is %.2f\n',p);
 
 %adaboost for class 1-3 classifier
@@ -214,7 +225,7 @@ h = 0;
 %loop through each test sample
 for i=1:k
     g_ada = 0;
-    %test only class 1 and class 2 samples
+    %test only class 1 and class 3 samples
     if(y(i) == 1 || y(i) == 3)
         j = j + 1;
         for l=1:kmax

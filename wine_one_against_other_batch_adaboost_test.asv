@@ -19,7 +19,7 @@ c = 3;
 % learning rate
 eta = 1;
 %number of adaboost iterations
-kmax = 30;
+kmax = 20;
 
 %number of samples
 s=50;
@@ -170,6 +170,7 @@ fprintf('Computing perfromance for Class 1-2 classifier using AdaBoost\n');
 %fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0;
 h = 0;
+h1 = 0;
 %loop through each test sample
 for i=1:k
     g_ada = 0;
@@ -193,29 +194,38 @@ for i=1:k
       %      fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t yes\n', i, y(i), class);
       %  else
       %      fprintf('%d\t\t\t\t %d\t\t\t\t %d\t\t\t\t no\n', i, y(i), class);
-        end   
+        end  
+        if hk(1,:)*y(i,2:end)' > b
+             class = 1;
+        else
+             class = 2;
+        end 
+        if(y(i) == class)   %correct
+            h1 = h1+1;
+        end    
     end
 end
 p = h/j*100;
 fprintf('The performance of class 1-2  classifier using AdaBoost on wine data set is %.2f\n',p);
+fprintf('The performance of class 1-2  classifier using AdaBoost on wine data set is %.2f\n',p);
 
-%adaboost for class 1-2 classifier
+%adaboost for class 1-3 classifier
 % call adaboost function
-[alpha, hk] = adaboost(x, s, 1,2, eta, b, kmax);
+[alpha, hk] = adaboost(x, s, 1,3, eta, b, kmax);
 %g_ada will be computed by sum(alpha*hk(x))
 g_ada = 0;
 
 % Testing Adaboost for class1-2 classifier
 
-fprintf('Computing perfromance for Class 1-2 classifier using AdaBoost\n');
+fprintf('Computing perfromance for Class 1-3 classifier using AdaBoost\n');
 %fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0;
 h = 0;
 %loop through each test sample
 for i=1:k
     g_ada = 0;
-    %test only class 1 and class 2 samples
-    if(y(i) == 1 || y(i) == 2)
+    %test only class 1 and class 3 samples
+    if(y(i) == 1 || y(i) == 3)
         j = j + 1;
         for l=1:kmax
             if hk(l,:)*y(i,2:end)' > b
@@ -227,7 +237,7 @@ for i=1:k
         if g_ada > 0
             class = 1;
         else
-            class = 2;
+            class = 3;
         end    
         if(y(i) == class)   %correct
             h = h+1;
@@ -238,25 +248,25 @@ for i=1:k
     end
 end
 p = h/j*100;
-fprintf('The performance of class 1-2  classifier using AdaBoost on wine data set is %.2f\n',p);
+fprintf('The performance of class 1-3  classifier using AdaBoost on wine data set is %.2f\n',p);
 
-%adaboost for class 1-2 classifier
+%adaboost for class 2-3 classifier
 % call adaboost function
-[alpha, hk] = adaboost(x, s, 1,2, eta, b, kmax);
+[alpha, hk] = adaboost(x, s, 2, 3, eta, b, kmax);
 %g_ada will be computed by sum(alpha*hk(x))
 g_ada = 0;
 
 % Testing Adaboost for class1-2 classifier
 
-fprintf('Computing perfromance for Class 1-2 classifier using AdaBoost\n');
+fprintf('Computing perfromance for Class 2-3 classifier using AdaBoost\n');
 %fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0;
 h = 0;
 %loop through each test sample
 for i=1:k
     g_ada = 0;
-    %test only class 1 and class 2 samples
-    if(y(i) == 1 || y(i) == 2)
+    %test only class 2 and class 3 samples
+    if(y(i) == 2 || y(i) == 3)
         j = j + 1;
         for l=1:kmax
             if hk(l,:)*y(i,2:end)' > b
@@ -266,9 +276,9 @@ for i=1:k
             end 
         end
         if g_ada > 0
-            class = 1;
-        else
             class = 2;
+        else
+            class = 3;
         end    
         if(y(i) == class)   %correct
             h = h+1;
@@ -279,4 +289,4 @@ for i=1:k
     end
 end
 p = h/j*100;
-fprintf('The performance of class 1-2  classifier using AdaBoost on wine data set is %.2f\n',p);
+fprintf('The performance of class 2-3  classifier using AdaBoost on wine data set is %.2f\n',p);

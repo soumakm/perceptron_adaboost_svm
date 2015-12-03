@@ -17,9 +17,16 @@ a0 = ones(1, d+1);
 Ix  = ones(n, 1);
 
 % add weight, add 1, 
-z = [x(:, 1) W Ix x(:,2:end)];
-
-
+zx = [x(:, 1) W Ix x(:,2:end)];
+j=1;
+for i=1:n
+    if zx(i) == c1 || zx(i) == c2
+        z(j,:) = zx(i,:);
+        j = j+ 1;
+    end
+end    
+%new training set size
+m = size(z,1);
 
 %class predicted by classifier
 class = 0;
@@ -51,41 +58,39 @@ for q=1:kmax
     
     hk(q,:) = batch_perceptron_one_against_other(z11, z22, a0, eta, b);
 
-    j = 0;
     e = 0;
     %loop through each test sample
-    for i=1:n
+    for i=1:m
         %test only class 1 and class 2 samples
-        if(z(i) == c1 || z(i) == c2)
-            j = j + 1;
-            if hk(q,:)*z(i,3:end)' > b
-                 class = c1;
-            else
-                 class = c2;
-            end 
-            if(z(i) ~= class)   %incorrect
-                e = e+1;
-            end   
-        end
+        if hk(q,:)*z(i,3:end)' > b
+             class = c1;
+        else
+             class = c2;
+        end 
+        if(z(i) ~= class)   %incorrect
+            e = e+1;
+        end   
+        
     end
-    fprintf('The error rate of class 1-2  AdaBoost classifier number %d on wine data set is %.2f\n',q,e/j);
-    alpha(q) = 0.5*log((1-e)/e);
+   % fprintf('The error rate of class 1-2  AdaBoost classifier number %d on wine data set is %.2f\n',q,e/m);
+    em = e/m;
+    alpha(q) = 0.5*log((1-em)/em);
     
     %The for loop is just for weight update
-    for i=1:n
+    for i=1:m
         %test only class 1 and class 2 samples
-        if(z(i) == c1 || z(i) == c2)
-            if hk(q, :)*z(i,3:end)' > b
-                 class = c1;
-            else
-                 class = c2;
-            end 
-            if(z(i) ~= class)   %incorrect
-               z(i,2) = z(i,2)*exp(alpha(q));
-            else %correct
-               z(i,2) = z(i,2)*exp(-alpha(q)); 
-            end   
-        end
+        
+        if hk(q, :)*z(i,3:end)' > b
+             class = c1;
+        else
+             class = c2;
+        end 
+        if(z(i) ~= class)   %incorrect
+           z(i,2) = z(i,2)*exp(alpha(q));
+        else %correct
+           z(i,2) = z(i,2)*exp(-alpha(q)); 
+        end   
+        
     end
     
     %normalize weights
