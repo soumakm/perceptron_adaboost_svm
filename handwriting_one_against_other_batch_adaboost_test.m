@@ -1,4 +1,4 @@
-% Two class batch perceptron test on wine data set 
+% Two class batch perceptron test on handwritten digit data set 
 % using one against other batch update rule
 % It then uses Adaboost to create stronger classifier.
 % This file should read files one for training, and one for test
@@ -13,24 +13,23 @@ clear all;
 clc;
 
 %margin
-b = 5;
+b = -0.1;
 %number of classes
 c = 3;
 % learning rate
-eta = 1;
+eta = 0.01;
 %number of adaboost iterations
 kmax = 20;
 
 %number of samples
-s=50;
+s=1500;
 
 % read data, 1st column is the class
-ux = dlmread('wine_uci_train.txt');
-uy = dlmread('wine_uci_test.txt');
+x = dlmread('handwritten_0_2_train.txt');
+y = dlmread('handwritten_0_2_test.txt');
 
-%normalize
-x = [ux(1:end,1),normalize(ux(:,2:end))];
-y = [uy(1:end,1),normalize(uy(:,2:end))];
+x(:,1) = x(:,1) + 1;
+y(:,1) = y(:,1) + 1;
 
 % number of training samples
 n = size(x,1);
@@ -87,8 +86,7 @@ g_ada = 0;
 
 % Testing Adaboost for class1-2 classifier
 
-fprintf('Computing perfromance for Class 1-2 classifier using AdaBoost\n');
-%fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
+%{
 j = 0; h = 0; h1 = 0;
 %loop through each test sample
 for i=1:k
@@ -125,8 +123,8 @@ for i=1:k
 end
 p = h/j*100;
 p1 = h1/j*100;
-fprintf('The performance of class 1-2  classifier without AdaBoost on wine data set is %.2f\n',p1);
-fprintf('The performance of class 1-2  classifier using AdaBoost on wine data set is %.2f\n',p);
+fprintf('The performance of class 0-1  classifier without AdaBoost on handwritten digit data set is %.2f\n',p1);
+fprintf('The performance of class 0-1  classifier using AdaBoost on handwritten digit data set is %.2f\n',p);
 
 %adaboost for class 1-3 classifier
 % call adaboost function
@@ -136,8 +134,6 @@ g_ada = 0;
 
 % Testing Adaboost for class1-2 classifier
 
-fprintf('Computing perfromance for Class 1-3 classifier using AdaBoost\n');
-%fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0; h = 0; h1 = 0;
 %loop through each test sample
 for i=1:k
@@ -174,8 +170,9 @@ for i=1:k
 end
 p = h/j*100;
 p1 = h1/j*100;
-fprintf('The performance of class 1-3  classifier without AdaBoost on wine data set is %.2f\n',p1);
-fprintf('The performance of class 1-3  classifier using AdaBoost on wine data set is %.2f\n',p);
+fprintf('The performance of class 0-2  classifier without AdaBoost on handwritten digit data set is %.2f\n',p1);
+fprintf('The performance of class 0-2  classifier using AdaBoost on handwritten digit data set is %.2f\n',p);
+%}
 
 %adaboost for class 2-3 classifier
 % call adaboost function
@@ -183,10 +180,8 @@ fprintf('The performance of class 1-3  classifier using AdaBoost on wine data se
 %g_ada will be computed by sum(alpha*hk(x))
 g_ada = 0;
 
-% Testing Adaboost for class1-2 classifier
+% Testing Adaboost for class2-3 classifier
 
-fprintf('Computing perfromance for Class 2-3 classifier using AdaBoost\n');
-%fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0; h = 0; h1 = 0;
 %loop through each test sample
 for i=1:k
@@ -223,5 +218,5 @@ for i=1:k
 end
 p = h/j*100;
 p1 = h1/j*100;
-fprintf('The performance of class 2-3  classifier without AdaBoost on wine data set is %.2f\n',p1);
-fprintf('The performance of class 2-3  classifier using AdaBoost on wine data set is %.2f\n',p);
+fprintf('The performance of class 1-2  classifier without AdaBoost on handwritten digit data set is %.2f\n',p1);
+fprintf('The performance of class 1-2  classifier using AdaBoost on handwritten digit data set is %.2f\n',p);
