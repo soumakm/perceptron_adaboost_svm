@@ -1,5 +1,5 @@
 % This functions calculates the Perceptron criterion
-% using Batch gradient descent procedure
+% using Batch gradient descent procedure using one against rest
 % input: x: a matrix of nxd dimentions, rows represent number of training
 %           samples, d represents dimension of feature vector.
 %           First column of x is class number

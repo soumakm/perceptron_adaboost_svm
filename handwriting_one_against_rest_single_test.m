@@ -1,4 +1,4 @@
-% Two class single sample perceptron test on handwritten digit data set 
+% Multi class single sample perceptron test on handwritten digit data set 
 % This file should read files one for training, and one for test
 % It should arrange the file data so that 1st column is the class 
 % rest of the columns are feature vector

@@ -1,5 +1,5 @@
-% This functions calculates the Perceptron criterion
-% using gradient descent procedure
+% This functions calculates the Perceptron criterion for one against rest
+% using gradient descent procedure using single sample update
 % input: x: a matrix of nxd dimentions, rows represent number of training
 %           samples, d represents dimension of feature vector.
 %           First column of x is class number
@@ -29,15 +29,3 @@ end
 
 % call gradient descent
 a = gradient_descent(y, a, eta);
-
-
-
-
-
-
-
-
-
-
-
-

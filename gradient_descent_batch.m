@@ -1,4 +1,4 @@
-% This function performs gradient descent for single sample
+% This function performs gradient descent using batch relaxation
 % input: 
 %       y: training samples already augmented with 1
 %       b: initial weight vector
