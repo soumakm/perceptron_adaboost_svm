@@ -41,32 +41,6 @@ d = size(x,2) - 1;
 % initialize weight vector with all ones
 a0 = ones(1, d+1);
 
-%separate matrix for each class
-b1=1;
-b2=1;
-b3=1;
-
-for i=1:n
-    if (x(i) == 1)
-        x1(b1,:) = x(i,:);
-        b1 = b1+1;
-    end  
-    
-    if (x(i) == 2)
-        x2(b2,:) = x(i,:);
-        b2 = b2+1;
-    end 
-    
-    if (x(i) == 3)
-        x3(b3,:) = x(i,:);
-        b3 = b3+1;
-    end 
-end    
-
-    a12 = batch_perceptron_one_against_other(x1, x2, a0, eta, b);
-    a13 = batch_perceptron_one_against_other(x1, x3, a0, eta, b);
-    a23 = batch_perceptron_one_against_other(x2, x3, a0, eta, b);
-
 %test data
 k = size(y,1);
 
@@ -86,9 +60,6 @@ y = [y(:, 1) I y(:,2:end)];
 g_ada = 0;
 
 % Testing Adaboost for class1-2 classifier
-
-fprintf('Computing perfromance for Class 1-2 classifier using AdaBoost\n');
-%fprintf('Sample No.  Actual Class  Classified Class  Corrrect?\n');
 j = 0; h = 0; h1 = 0;
 %loop through each test sample
 for i=1:k
